@@ -3,10 +3,12 @@ package com.sakthi.shyaway.di
 import android.content.Context
 import androidx.room.Room
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.sakthi.shyaway.BuildConfig
 import com.sakthi.shyaway.core.AppDatabase
+import com.sakthi.shyaway.core.Constants.API_KEY
 import com.sakthi.shyaway.core.Constants.BASE_URL
-import com.sakthi.shyaway.feature_wear_list.data.local.WearDAO
+import com.sakthi.shyaway.feature_cart.data.local.CartDAO
+import com.sakthi.shyaway.feature_cart.data.repositoty.CartRepositoryImpl
+import com.sakthi.shyaway.feature_cart.domain.repository.CartRepository
 import com.sakthi.shyaway.feature_wear_list.data.repository.WearRepositoryImpl
 import com.sakthi.shyaway.feature_wear_list.data.remote.WearApiService
 import com.sakthi.shyaway.feature_wear_list.domain.repository.WearRepository
@@ -41,8 +43,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideWearsDAO(database: AppDatabase): WearDAO {
-        return database.getWearDAO()
+    fun provideCartDAO(database: AppDatabase): CartDAO {
+        return database.getCartDAO()
     }
 
     @Provides
@@ -73,7 +75,7 @@ object AppModule {
             val newRequest: Request = originalRequest.newBuilder()
                 .addHeader(
                     "Authorization",
-                    "Bearer ${BuildConfig.API_KEY}"
+                    "Bearer $API_KEY"
                 )
                 .build()
 
@@ -99,10 +101,14 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideWearRepository(wearDAO: AppDatabase, wearApiService: WearApiService): WearRepository {
-        return WearRepositoryImpl(wearDAO, wearApiService)
+    fun provideWearRepository(wearApiService: WearApiService): WearRepository {
+        return WearRepositoryImpl(wearApiService)
     }
 
-
+    @Provides
+    @Singleton
+    fun provideCartRepository(dao: CartDAO): CartRepository {
+        return CartRepositoryImpl(dao)
+    }
 
 }

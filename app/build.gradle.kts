@@ -13,12 +13,6 @@ android {
     namespace = "com.sakthi.shyaway"
     compileSdk = 34
 
-    val localProperties = Properties()
-    val localPropertiesFile = rootProject.file("local.properties")
-
-    if (localPropertiesFile.exists()) {
-        localProperties.load(localPropertiesFile.inputStream())
-    }
 
     defaultConfig {
         applicationId = "com.sakthi.shyaway"
@@ -31,9 +25,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-
-        buildConfigField("String", "API_KEY", "\"${localProperties.getProperty("API_KEY")}\"")
-
 
     }
     buildTypes {
@@ -108,4 +99,8 @@ dependencies {
     // For pagination
     implementation(libs.androidx.paging.runtime) // Paging
     implementation(libs.androidx.paging.compose)
+
+    // For Navigation
+    implementation(libs.androidx.navigation.compose)
+
 }

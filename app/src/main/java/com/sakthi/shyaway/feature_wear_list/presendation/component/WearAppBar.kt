@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun WearAppBar(
     itemCount: Int,
+    cartItemCount: Int,
     onCartClicked: () -> Unit,
     onSortClick: () -> Unit,
     onFilterClick: () -> Unit
@@ -77,7 +78,7 @@ fun WearAppBar(
                     }
 
                     Gap(width = 10)
-                    CartIcon(cartItemCount = 10, onCartClicked)
+                    CartIcon(cartItemCount = cartItemCount, onCartClicked)
                     Gap(width = 10)
 
                     IconButton(onClick = { }) {
@@ -145,7 +146,7 @@ fun CartIcon(
         badge = {
             if (cartItemCount > 0) {
                 Badge {
-                    Text(cartItemCount.toString()) // Shows item count
+                    Text(cartItemCount.toString())
                 }
             }
         }
@@ -163,7 +164,7 @@ fun CartIcon(
 @Preview
 @Composable
 fun Preview() {
-    WearAppBar(itemCount = 15, onSortClick = { /*TODO*/ }, onCartClicked = {}) {
+    WearAppBar(itemCount = 15,30, onSortClick = { /*TODO*/ }, onCartClicked = {}) {
 
     }
 }

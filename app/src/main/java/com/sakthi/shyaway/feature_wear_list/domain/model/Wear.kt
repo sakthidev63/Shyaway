@@ -1,6 +1,7 @@
 package com.sakthi.shyaway.feature_wear_list.domain.model
 
 data class Wear(
+    val id: String ,
     val coverImage: String,
     val title: String,
     val rating: String,

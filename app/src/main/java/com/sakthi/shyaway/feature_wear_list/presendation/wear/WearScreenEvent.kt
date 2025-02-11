@@ -1,7 +1,14 @@
 package com.sakthi.shyaway.feature_wear_list.presendation.wear
 
-sealed interface WearScreenEvent {
-    data object OnSearch : WearScreenEvent
-    data object Trending : WearScreenEvent
-    data object Latest : WearScreenEvent
+import com.sakthi.shyaway.feature_cart.domain.model.Cart
+import com.sakthi.shyaway.feature_wear_list.domain.model.SortOption
+
+sealed class WearScreenEvent {
+
+    data class OnSortClick(val sortOption: SortOption? = null) : WearScreenEvent()
+
+    data class OnAddCartClick(val cart: Cart) : WearScreenEvent()
+
+    data class OnWishlistClick(val id: String) : WearScreenEvent()
+
 }

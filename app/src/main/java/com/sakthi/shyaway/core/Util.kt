@@ -1,10 +1,6 @@
 package com.sakthi.shyaway.core
 
 import androidx.compose.ui.graphics.Color
-import java.time.Duration
-import java.time.LocalDateTime
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
 
 object Util {
 
@@ -21,7 +17,7 @@ object Util {
                 alpha = a.toFloat()
             )
         } else {
-            Color.Black
+            Color.Transparent
         }
     }
 
