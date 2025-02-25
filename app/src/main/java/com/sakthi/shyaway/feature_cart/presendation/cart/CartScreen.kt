@@ -44,15 +44,17 @@ import com.sakthi.shyaway.feature_wear_list.presendation.component.Gap
 @Composable
 fun CartScreen(
     navController: NavController,
-    itemCount: Int,
     viewModel: CartViewModel = hiltViewModel()
 ) {
 
     val state = viewModel.state
 
+
     Scaffold(
-        topBar = { CartAppBar(itemCount = itemCount) { navController.popBackStack() } },
-        bottomBar = { if(state.cartList.isNotEmpty()) CartBottomBar() }
+        topBar = { CartAppBar(itemCount = state.cartList.size) { navController.popBackStack() } },
+        bottomBar = { if (state.cartList.isNotEmpty()) CartBottomBar(
+            priceBreakdown = state.priceBreakdown
+        ) }
     ) { i ->
 
         if (state.cartList.isNotEmpty()) {
@@ -68,8 +70,15 @@ fun CartScreen(
                 ) {
                     LazyColumn {
                         items(state.cartList.size) { index ->
-                            CartItemCard(cartItem = state.cartList[index],viewModel) {
-                                viewModel.showBottomSheet(true, state.cartList[index].id)
+                            CartItemCard(
+                                cartItem = state.cartList[index],
+                                viewModel = viewModel,
+                                onQuantityClick = {
+                                    viewModel.showBottomSheet(true, state.cartList[index].id)
+                                },
+                                onRemoveCartClick = { viewModel.removeCart(state.cartList[index]) }
+                            ) {
+                                viewModel.moveCartToWishlist(state.cartList[index])
                             }
 
                             HorizontalDivider(
@@ -100,15 +109,15 @@ fun CartScreen(
                         item {
                             PriceBreakdownCard(
                                 giftCards = listOf("0RS8ZVKMI0L9", "0RLO3468ICOY"),
-                                totalMRP = 3941.00,
-                                discount = 1848.00,
-                                subtotal = 2093.00,
-                                gst = 0.00,
-                                shipping = "FREE",
-                                roundedUp = 0.01,
-                                totalPayable = 1602.00,
-                                totalSavings = 1956.01,
-                                savingsPercentage = 47,
+                                totalMRP = state.priceBreakdown.total,
+                                discount = state.priceBreakdown.discount,
+                                subtotal = state.priceBreakdown.subtotal,
+                                gst = state.priceBreakdown.gst,
+                                shipping = state.priceBreakdown.shipping,
+                                roundedUp = state.priceBreakdown.roundedUp,
+                                totalPayable = state.priceBreakdown.totalPayable,
+                                totalSavings = state.priceBreakdown.totalSavings,
+                                savingsPercentage = state.priceBreakdown.savingsPercentage,
                             )
                         }
                     }

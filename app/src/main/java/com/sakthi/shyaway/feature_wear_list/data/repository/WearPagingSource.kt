@@ -1,11 +1,14 @@
 package com.sakthi.shyaway.feature_wear_list.data.repository
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.sakthi.shyaway.feature_wear_list.data.remote.WearApiService
 import com.sakthi.shyaway.feature_wear_list.data.remote.dto.WearRequestDto
 import com.sakthi.shyaway.feature_wear_list.data.remote.dto.toDomain
 import com.sakthi.shyaway.feature_wear_list.domain.model.Wear
+import retrofit2.HttpException
+import java.io.IOException
 
 class WearPagingSource(
     private val api: WearApiService,

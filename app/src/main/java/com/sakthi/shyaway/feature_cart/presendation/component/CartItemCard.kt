@@ -18,7 +18,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -43,7 +42,9 @@ import com.sakthi.shyaway.feature_wear_list.presendation.component.Gap
 fun CartItemCard(
     cartItem: Cart,
     viewModel: CartViewModel,
-    onQuantityClick: () -> Unit
+    onQuantityClick: () -> Unit,
+    onRemoveCartClick: () -> Unit,
+    onMoveToCartClick: () -> Unit,
 ) {
     Card(
         shape = RoundedCornerShape(0.dp),
@@ -125,6 +126,9 @@ fun CartItemCard(
                                 colors = CardDefaults.cardColors(containerColor = Color.White),
                                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
                                 modifier = Modifier.size(35.dp)
+                                    .clickable {
+                                        onRemoveCartClick()
+                                    }
                             ) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_circle_deleted),
@@ -140,6 +144,9 @@ fun CartItemCard(
                                 colors = CardDefaults.cardColors(containerColor = Color.White),
                                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
                                 modifier = Modifier.size(35.dp)
+                                    .clickable {
+                                        onMoveToCartClick()
+                                    }
                             ) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_circle_delete_wishlist),
@@ -345,21 +352,4 @@ fun AppliedLabelView(quantity: Int) {
 @Composable
 fun Preview() {
     OfferView(quantity = 2)
-}
-
-@Preview
-@Composable
-fun Previewv() {
-    CartItemCard(
-        cartItem = Cart(
-        id = "",
-            coverImage = "",
-            title = "sadfaf fdfdaf adfad sfsa  fasfdaf yterdyety edtyedt",
-            price = "54",
-            discountPrice = "45",
-            discount = "",
-            size = "S",
-            quantity = 4
-    ), hiltViewModel()) {
-    }
 }

@@ -8,6 +8,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sakthi.shyaway.feature_cart.domain.model.Cart
+import com.sakthi.shyaway.feature_cart.domain.model.PriceBreakdown
 import com.sakthi.shyaway.feature_cart.domain.repository.CartRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -37,6 +39,12 @@ class CartViewModel @Inject constructor(
     fun updateQuantity(quantity: Int) {
         currentCartId.value?.let { cartId ->
             _selectedCartQuantities[cartId] = quantity
+            state = state.copy(
+                priceBreakdown = calculatePriceBreakdown(
+                    state.cartList,
+                    quantity
+                )
+            )
         }
         isBottomSheetVisible.value = false
     }
@@ -57,7 +65,8 @@ class CartViewModel @Inject constructor(
                     state = if (result.isSuccess) {
                         state.copy(
                             isLoading = false,
-                            cartList = result.getOrDefault(emptyList())
+                            cartList = result.getOrDefault(emptyList()),
+                            priceBreakdown = calculatePriceBreakdown(result.getOrDefault(emptyList()))
                         )
                     } else {
                         state.copy(
@@ -68,5 +77,55 @@ class CartViewModel @Inject constructor(
                 }
         }
     }
+
+    fun removeCart(cart: Cart) {
+        viewModelScope.launch {
+            repository.removeCart(cart)
+        }
+    }
+
+    fun moveCartToWishlist(cart: Cart) {
+        viewModelScope.launch {
+            repository.moveCartToWishlist(cart)
+        }
+    }
+
+    private fun calculatePriceBreakdown(cartList: List<Cart>, updatedQuantity: Int = 1): PriceBreakdown {
+        var total = 0.0
+        var subtotal = 0.0
+        val gst = 0.0
+        val shipping = "FREE"
+        val roundedUp = 0.0
+        var totalPayable = 0.0
+        var totalSavings = 0.0
+        var discountPrice = 0.0
+
+       total = cartList.sumOf {
+            it.price.toDouble() * updatedQuantity
+        }
+
+        discountPrice = cartList.sumOf {
+            it.discountPrice.toDouble() * updatedQuantity
+        }
+
+
+        subtotal = total - discountPrice
+
+        totalPayable = subtotal
+        totalSavings = discountPrice
+
+        return PriceBreakdown(
+            total = total,
+            discount = discountPrice,
+            subtotal = subtotal,
+            gst = gst,
+            shipping = shipping,
+            roundedUp = roundedUp,
+            totalPayable = totalPayable,
+            totalSavings = totalSavings,
+            savingsPercentage = ((discountPrice / total) * 100).toInt()
+        )
+    }
+
 
 }

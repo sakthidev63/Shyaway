@@ -11,4 +11,8 @@ interface CartRepository {
 
    fun getCartCount(): Flow<Int>
 
+   suspend fun removeCart(cart: Cart)
+
+   suspend fun moveCartToWishlist(cart: Cart)
+
 }

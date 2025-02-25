@@ -33,6 +33,7 @@ fun WearScreen(
     itemCount: Int,
     viewmodel: WearViewmodel,
     onCartClicked: () -> Unit,
+    onWishlistClicked: () -> Unit
 ) {
     val cartItemCount by remember { derivedStateOf { viewmodel.cartItemCount } }
 
@@ -57,7 +58,8 @@ fun WearScreen(
                 cartItemCount = cartItemCount,
                 onCartClicked = onCartClicked,
                 onFilterClick = {},
-                onSortClick = { showSheet = true }
+                onSortClick = { showSheet = true },
+                onWishlistClick = onWishlistClicked
             )
         }
     ) { paddingValues ->

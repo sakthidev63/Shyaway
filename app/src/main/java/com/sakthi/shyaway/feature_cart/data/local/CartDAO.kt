@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.sakthi.shyaway.feature_cart.domain.model.Cart
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -18,5 +17,8 @@ interface CartDAO {
 
     @Query("SELECT COUNT(*) FROM CartEntity")
     fun getCartCount(): Flow<Int>
+
+    @Query("DELETE FROM CartEntity WHERE id = :cartId")
+    suspend fun removeFromCart(cartId: String)
 
 }

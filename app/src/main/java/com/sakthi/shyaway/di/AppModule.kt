@@ -6,12 +6,15 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import com.sakthi.shyaway.core.AppDatabase
 import com.sakthi.shyaway.core.Constants.API_KEY
 import com.sakthi.shyaway.core.Constants.BASE_URL
+import com.sakthi.shyaway.core.SecureStorage
 import com.sakthi.shyaway.feature_cart.data.local.CartDAO
 import com.sakthi.shyaway.feature_cart.data.repositoty.CartRepositoryImpl
 import com.sakthi.shyaway.feature_cart.domain.repository.CartRepository
 import com.sakthi.shyaway.feature_wear_list.data.repository.WearRepositoryImpl
 import com.sakthi.shyaway.feature_wear_list.data.remote.WearApiService
 import com.sakthi.shyaway.feature_wear_list.domain.repository.WearRepository
+import com.sakthi.shyaway.feature_wishlist.data.repositoty.WishlistRepositoryImpl
+import com.sakthi.shyaway.feature_wishlist.domain.repository.WishlistRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -72,15 +75,16 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideLoggingInterceptor(): Interceptor {
+    fun provideLoggingInterceptor(storage: SecureStorage): Interceptor {
         return Interceptor { chain ->
             val originalRequest: Request = chain.request()
 
             val newRequest: Request = originalRequest.newBuilder()
                 .addHeader(
                     "Authorization",
-                    "Bearer $API_KEY"
+                    "Bearer ${storage.getAuthToken()}"
                 )
+                .addHeader("User-Agent", "Mozilla/5.0 (Android 12)")
                 .build()
 
             chain.proceed(newRequest)
@@ -111,8 +115,20 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideCartRepository(dao: CartDAO): CartRepository {
-        return CartRepositoryImpl(dao)
+    fun provideCartRepository(dao: CartDAO, wishlistRepository: WishlistRepository): CartRepository {
+        return CartRepositoryImpl(dao, wishlistRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideWishlistRepository(@ApplicationContext context: Context): WishlistRepository {
+        return WishlistRepositoryImpl(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSecureStorage(@ApplicationContext context: Context): SecureStorage {
+        return SecureStorage(context)
     }
 
 }

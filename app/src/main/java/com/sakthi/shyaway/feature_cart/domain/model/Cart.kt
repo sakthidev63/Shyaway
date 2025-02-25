@@ -10,7 +10,10 @@ data class Cart(
     val discountPrice: String,
     val discount: String,
     val size: String,
-    val quantity: Int
+    val quantity: Int,
+    val rating: String,
+    val offer: String,
+    val offerBackgroundColor: String
 )
 
 fun Cart.toEntity() : CartEntity {
@@ -22,6 +25,9 @@ fun Cart.toEntity() : CartEntity {
         discountPrice = discountPrice,
         discount = discount,
         size = size,
-        quantity = quantity
+        quantity = quantity,
+        rating = rating,
+        offer = offer,
+        offerBackgroundColor = offerBackgroundColor
     )
 }

@@ -15,6 +15,7 @@ import androidx.navigation.toRoute
 import com.sakthi.shyaway.feature_cart.presendation.cart.CartScreen
 import com.sakthi.shyaway.feature_wear_list.presendation.wear.WearScreen
 import com.sakthi.shyaway.feature_wear_list.presendation.wear.WearViewmodel
+import com.sakthi.shyaway.feature_wishlist.presendation.wishlist.WishlistScreen
 import com.sakthi.shyaway.ui.theme.ShyawayTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.serialization.Serializable
@@ -32,16 +33,20 @@ class MainActivity : ComponentActivity() {
                     composable<WearScreenRoute> {
                         WearScreen(
                             itemCount = 30,
-                            viewmodel = viewmodel
+                            viewmodel = viewmodel,
+                            onCartClicked = { navController.navigate(CartScreenRoute(viewmodel.cartItemCount)) }
                         ) {
-                            navController.navigate(CartScreenRoute(viewmodel.cartItemCount))
+                            navController.navigate(WishlistRoute)
                         }
                     }
                     composable<CartScreenRoute> {
-                       val itemCount = it.toRoute<CartScreenRoute>()
                         CartScreen(
                             navController,
-                            itemCount = itemCount.itemCount
+                        )
+                    }
+                    composable<WishlistRoute> {
+                        WishlistScreen(
+                            navController = navController
                         )
                     }
                 }
@@ -58,3 +63,5 @@ data class CartScreenRoute(
     val itemCount: Int
 )
 
+@Serializable
+object WishlistRoute

@@ -14,7 +14,10 @@ data class CartEntity(
     val discountPrice: String,
     val discount: String,
     val size: String,
-    val quantity: Int
+    val quantity: Int,
+    val rating: String,
+    val offer: String,
+    val offerBackgroundColor: String
 )
 
 fun CartEntity.toDomain() : Cart {
@@ -26,6 +29,9 @@ fun CartEntity.toDomain() : Cart {
         discountPrice = discountPrice,
         discount = discount,
         size = size,
-        quantity = quantity
+        quantity = quantity,
+        rating = rating,
+        offer = offer,
+        offerBackgroundColor = offerBackgroundColor
     )
 }

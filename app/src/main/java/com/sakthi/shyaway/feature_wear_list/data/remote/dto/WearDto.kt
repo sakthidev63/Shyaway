@@ -56,7 +56,7 @@ fun Item.toDomain(): Wear {
         offer = offerData.firstOrNull()?.label ?: "",
         offerBackgroundColor = offerData.firstOrNull()?.color ?: "",
         price = "559",
-        discountPrice = "779",
+        discountPrice = "279",
         discount = "SAVE 30%",
         isWishlist = false
     )

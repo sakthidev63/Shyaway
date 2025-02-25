@@ -38,7 +38,8 @@ fun WearAppBar(
     cartItemCount: Int,
     onCartClicked: () -> Unit,
     onSortClick: () -> Unit,
-    onFilterClick: () -> Unit
+    onFilterClick: () -> Unit,
+    onWishlistClick: () -> Unit
 ) {
 
     Column {
@@ -81,7 +82,7 @@ fun WearAppBar(
                     CartIcon(cartItemCount = cartItemCount, onCartClicked)
                     Gap(width = 10)
 
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = onWishlistClick) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_wishlist),
                             contentDescription = "Wishlist",
@@ -164,7 +165,7 @@ fun CartIcon(
 @Preview
 @Composable
 fun Preview() {
-    WearAppBar(itemCount = 15,30, onSortClick = { /*TODO*/ }, onCartClicked = {}) {
+    WearAppBar(itemCount = 15,30, onSortClick = { /*TODO*/ }, onCartClicked = {}, onFilterClick = {}) {
 
     }
 }

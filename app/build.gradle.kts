@@ -103,4 +103,12 @@ dependencies {
     // For Navigation
     implementation(libs.androidx.navigation.compose)
 
+    // DataStore
+    implementation(libs.androidx.datastore)
+    implementation(libs.androidx.datastore.core)
+
+    //Secure SharedPreference
+    implementation(libs.androidx.security.crypto)
+
+
 }
